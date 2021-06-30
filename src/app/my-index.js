@@ -4,12 +4,13 @@
       $scope.addNewRow = addNewRow;
       $scope.save = save;
       $scope.cancel = cancel;
-      $scope.data = [];
-      $scope.oldData = [];
-      $scope.changeItem = [];
-      $scope.newItem = [];
-      $scope.map = new Map();
-      var mockData = Mock.mock('http://local/assignee', {
+      $scope.data = []; //
+      $scope.oldData = [];//做拷贝使用，为了cancel 按钮
+      $scope.changeItem = []; // 从后端返回来的数据 经过我们修改的某一行
+      $scope.newItem = []; // 我们add new 一行的数据
+
+      //使用mockjs 生成一个对象
+      Mock.mock('http://local/assignee', {
         'assignee|1-10': [{
           // 属性 id 是一个自增数，起始值为 1，每次增 1
           'assigneeId|+1': 1,
@@ -35,7 +36,7 @@
           var example1 = document.getElementById('example1');
 
           $scope.hot = new Handsontable(example1, {
-            data: [],
+            data: $scope.data,
             allowInsertRow: false,
             readOnly: true,
             colHeaders: ['assigneeId', 'assignmentHomeLocation', 'assignmentHomeCountry', ''],
@@ -62,37 +63,40 @@
               cellProperties.renderer = defaultValueRenderer;
               return cellProperties;
             },
-            beforeChangeRender: (changes, source) => {
-              if (!changes) return;
+            beforeRender: () => {
+              // 计算渲染开始的时间
             },
-            afterChange: (changes, source) => {
+            afterRender: () => {
+              //计算渲染之后的时间
+            },
+            afterChange: (changes) => {
               if (!changes) return;
               const row = changes[0][0];
 
-              if($scope.data[row][4] == 'addnew'){
+              if ($scope.data[row][4] == 'addnew') {
+                //如果是addnew 代表是我们新增的一行
                 saveChangeData(row, $scope.newItem)
-              }else {
+              } else {
+                //代表我们改变的是已有的数据
                 saveChangeData(row, $scope.changeItem);
               }
             }
           });
-
-          $scope.hot.loadData($scope.data);
-
-
         });
 
       function saveChangeData(row, item) {
-        if($scope.data[row][0] == null) return;
+
+        //如果为null,代表id没填，就不保存
+        if ($scope.data[row][0] == null) return;
         var hasNewData = true;
-          for (let i = 0; i < item.length; i++) {
-            if (item[i][0] == $scope.data[row][0]) {
-              item[i] = [$scope.data[row][0], $scope.data[row][1], $scope.data[row][2], $scope.data[row][3], $scope.data[row][4]];
-              hasNewData = false;
-              break;
-            }
+        for (let i = 0; i < item.length; i++) {
+          if (item[i][0] == $scope.data[row][0]) {
+            item[i] = [$scope.data[row][0], $scope.data[row][1], $scope.data[row][2], $scope.data[row][3], $scope.data[row][4]];
+            hasNewData = false;
+            break;
           }
-        if(hasNewData) {
+        }
+        if (hasNewData) {
           item.push([$scope.data[row][0], $scope.data[row][1], $scope.data[row][2], $scope.data[row][3], $scope.data[row][4]]);
         }
       }
@@ -136,6 +140,7 @@
           }
         }
 
+        // || 后面代表的是从后端返回来的数据就是手动添加并保存的
         if ($scope.data[row][4] == 'addnew' && prop == 'del' || ($scope.data[row][3] && prop == 'del')) {
 
           if (!td.querySelector('img')) {
@@ -150,15 +155,17 @@
       function addNewRow() {
         $scope.hot.alter('insert_row', 0, 1);
         $scope.data[0][4] = 'addnew';
-        $scope.data[0][3] =  true;
+        $scope.data[0][3] = true;
       }
 
       function save() {
+        //点击save 按钮 发请求保存数据
         console.log($scope.changeItem, 'change');
         console.log($scope.newItem, 'newItem')
       }
 
-      function cancel(){
+      function cancel() {
+        //点击cancel 能够重新渲染之前的数据
         $scope.hot.loadData($scope.oldData);
         $scope.hot.render();
       }

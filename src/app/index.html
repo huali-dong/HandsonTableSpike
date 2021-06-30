@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+<!--    <script data-require="angular.js@1.4.7" data-semver="1.4.7" src="https://code.angularjs.org/1.4.7/angular.js"></script>-->
+<!--    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.7/angular-route.min.js"></script>-->
+<!--    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.7/angular-resource.min.js"></script>-->
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/handsontable@9.0.1/dist/handsontable.full.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/handsontable@9.0.1/dist/handsontable.full.min.css" rel="stylesheet" media="screen">
+    <script type="text/javascript" src="../../bower_components/mockjs/dist/mock.js"></script>
+    <script src="my-index.js"></script>
+    <link href="index.css" rel="stylesheet">
+</head>
+
+<body>
+
+<div ng-app="myIndex" ng-controller="myIndexController">
+    <h1>Header</h1>
+    <button ng-click="addNewRow()">addNewRow</button>
+    <button ng-click="save()">Save</button>
+    <button ng-click="cancel()">Cancel</button>
+    <!--<div *ngIf="canDelete(data)">Test</div>-->
+    <i class="fas fa-arrow-circle-down"></i>
+    <div id="example1"></div>
+</div>
+</body>
+</html>

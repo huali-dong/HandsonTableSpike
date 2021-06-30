@@ -1,0 +1,37 @@
+{
+  "assignee": [
+    {
+      "assigneeId": "1",
+      "assignmentHomeLocation": "china",
+      "assignmentCountry": "beijing",
+      "isManual": false
+    },
+    {
+      "assigneeId": "2",
+      "assignmentHomeLocation": "us",
+      "assignmentCountry": "wuhan",
+      "isManual": false
+    },
+    {
+      "assigneeId": "3",
+      "assignmentHomeLocation": "japan",
+      "assignmentCountry": "chengdu",
+      "isManual": false
+    }
+  ],
+  "assignee-assignment-country":{
+    "assigneeId": 1,
+    "assignmentHomeLocation": "china",
+    "assignmentCountry": [
+      {
+        "name": "beijing"
+      },
+      {
+        "name": "wuhan"
+      },
+      {
+        "name": "shenzhen"
+      }
+    ]
+  }
+}
